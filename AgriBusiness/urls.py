@@ -19,6 +19,8 @@ from django.urls import path
 from dashboard import views as d_view
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', d_view.home),
     path('product/', d_view.product),
-    path('product/<int:product_id>', d_view.showProduct)
+    path('product/<int:product_id>/', d_view.showProduct),
+    path('user/', d_view.user),
 ]
