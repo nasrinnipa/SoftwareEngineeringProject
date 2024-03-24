@@ -11,6 +11,7 @@ class Admin(models.Model):
     password = models.CharField(max_length=20)
 
 class Product(models.Model):
+
     id= models.AutoField(primary_key=True)
     product_name = models.CharField(max_length=255)
     price = models.FloatField()

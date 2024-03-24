@@ -16,7 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
+from dashboard import views as d_view
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('product/', d_view.product),
+    path('product/<int:product_id>', d_view.showProduct)
 ]
