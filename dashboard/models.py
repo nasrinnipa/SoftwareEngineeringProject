@@ -17,6 +17,9 @@ class Product(models.Model):
     price = models.FloatField()
     image = models.ImageField(default='')
 
+    def __str__(self):
+        return self.product_name
+
 class User(models.Model):
 
     id = models.AutoField(primary_key=True)

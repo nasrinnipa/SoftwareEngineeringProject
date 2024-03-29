@@ -1,10 +1,6 @@
 from django.contrib import admin
-
+from .models import Seller, Buyer, Product, Sell_Product, Order, Inventory, Payment
 
 # Register your models here.
-from .models import Buyer,Order,Payment
 
-admin.site.register(Buyer)
-admin.site.register(Order)
-admin.site.register(Payment)
-
+admin.site.register([Seller, Buyer, Sell_Product, Order, Inventory, Payment])

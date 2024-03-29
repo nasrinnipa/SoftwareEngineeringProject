@@ -6,12 +6,16 @@ from buyer import  views as b_view
 from seller import views as s_view
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', d_view.home),
+    # path('', d_view.home),
     path('product/', d_view.product),
     path('product/<int:product_id>/', d_view.showProduct),
     path('user/', d_view.user),
 
-    path('buyer/', b_view.buyer),
-    path('seller/', s_view.seller),
 
+    path('',b_view.home, name ='home'),
+    path('signin/',b_view.sign_in, name ='Sign In'),
+    path('signup/',b_view.sign_up, name ='Sign Up'),
+    path('seller/',b_view.seller, name ='seller'),
+    path('buyer/',b_view.buyer, name ='buyer'),
+    path('inventory/',b_view.inventory, name ='inventory'),
 ]
