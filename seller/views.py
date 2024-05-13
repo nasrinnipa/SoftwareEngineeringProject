@@ -1,5 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
 
+
+from .models import Seller
+
 def seller(request):
-    return HttpResponse("Seller ")
+    seller = Seller.objects.all()
+    return render(request, 'seller.html', {'seller': seller})

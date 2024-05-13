@@ -1,0 +1,21 @@
+{% extends 'dashboard_seller.html' %}
+
+{% block title %}Seller Management{% endblock %}
+
+{% block content %}
+
+<h1>Seller Info:</h1>
+
+{% for s in seller%}
+
+<p> First Name    : {{s.firstname}}</p>
+<p> Last Name     : {{s.lastname}}</p>
+<p> Location      : {{s.location}}</p>
+<p> Phone Number  : {{s.phone}}</p>
+<p> Email         : {{s.emal}}</p>
+
+<hr>
+
+{% endfor %}
+
+{% endblock %}

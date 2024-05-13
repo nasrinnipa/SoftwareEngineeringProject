@@ -37,8 +37,8 @@ class Sell_Product(models.Model):
 class Order(models.Model):
 
     Order_Id = models.AutoField(primary_key=True)
-    Buyer_Id = models.ForeignKey(Buyer, on_delete=models.CASCADE, null=True)
-    Seller_Id = models.ForeignKey(Seller, on_delete=models.CASCADE, null=True)
+    Buyer_Id = models.IntegerField(null=True)
+    Seller_Id = models.IntegerField(null=True)
     Product_Id = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
     Product_Amount = models.IntegerField(null=True)
 
@@ -65,3 +65,9 @@ class Payment(models.Model):
     Payment_Time = models.TimeField(auto_now_add=True, auto_now=False)
     Payment_Date = models.DateTimeField(auto_now_add=True, auto_now=False)
 
+class Cart(models.Model):
+
+    id = models.AutoField(primary_key=True)
+    buyer_id= models.IntegerField(null=True)
+    product_id = models.IntegerField(null=True)
+    

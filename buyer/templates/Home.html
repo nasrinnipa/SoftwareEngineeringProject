@@ -1,4 +1,6 @@
+
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,6 +8,16 @@
     <title>Home</title>
 </head>
 <body>
+
+  <h2>Login</h2>
+  <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      {% if error_message %}
+          <p>{{ error_message }}</p>
+      {% endif %}
+      <button type="submit">Login</button>
+  </form>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
@@ -16,15 +28,14 @@
   </form>
   </div>
 </nav>
-
-<img src="Home.jpeg" width="1600" height="400">
+<img src="/media/images/Home.jpg" width="1600" height="400">
 
 <br>
 <br>
 <br>
 <form class="container-fluid justify-content-start" align="center">
-  <a href = "/seller"<button class="btn btn-outline-success me-2" type="button">Become a Buyer</button> </a>
-  <a href = "/buyer"<button class="btn btn-outline-success me-2" type="button">Become a Seller</button> </a>
+  <a href = "/seller"<button class="btn btn-outline-success me-2" type="button">Become a Seller</button> </a>
+  <a href = "/buyer"<button class="btn btn-outline-success me-2" type="button">Become a Buyer</button> </a>
 
   </form>
 

@@ -1,0 +1,35 @@
+{% extends 'dashboard_buyer.html' %}
+
+{% block title %}Product Details{% endblock %}
+
+{% block content %}
+<!-- Display messages -->
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.product_name }}">
+        </div>
+        <div class="col-md-6">
+
+            <h2>{{ product.product_name }}</h2>
+            <p>Price: {{ product.price }} Taka / kg.</p>
+            <p>{{ product.product_name }} description will be added leter</p>
+            <div class="row">
+                <div class="col-md-3 ">
+                    <a href="/cart/add/{{ product.id }}" class="btn btn-success ">Add to Cart</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
