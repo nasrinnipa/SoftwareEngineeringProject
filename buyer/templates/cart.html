@@ -17,15 +17,16 @@
 
     <div class="row">
         <div class="col-md-12">
-            <h2>My Cart</h2>
+            <h2 class="mb-4">My Cart</h2>
             <hr>
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-12">
-            <table class="table table-striped">
-                <thead>
+            <!-- Table for cart items -->
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
                     <tr>
                         <th scope="col">Product Image</th>
                         <th scope="col">Product Name</th>
@@ -35,7 +36,7 @@
                 <tbody>
                     {% for product in products %}
                     <tr>
-                        <td><img src="{{ product.image.url }}" alt="{{ product.product_name }}" height="50px"></td>
+                        <td><img src="{{ product.image.url }}" alt="{{ product.product_name }}" class="img-fluid" style="max-height: 50px;"></td>
                         <td>{{ product.product_name }}</td>
                         <td>${{ product.price }}</td>
                     </tr>
@@ -45,9 +46,10 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row mt-4">
         <div class="col-md-12 text-right">
-            <a href="/checkout/" class="btn btn-success">Checkout</a>
+            <!-- Checkout button -->
+            <a href="/checkout/" class="btn btn-lg btn-success">Proceed to Checkout</a>
         </div>
     </div>
 </div>

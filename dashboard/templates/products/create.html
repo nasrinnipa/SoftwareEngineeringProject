@@ -3,36 +3,35 @@
 {% block title %}Create Product{% endblock %}
 
 {% block content %}
-<div class="container row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="mb-4 text-center">Create Product</h2>
 
-   
-    <h2>Create Product</h2>
-    <form method="post" enctype="multipart/form-data" action="/product/save/">
-        {% csrf_token %}
-        
-        <div class="form-group">
-            <label for="product_name">Product Name:</label>
-            <input type="text" class="form-control" id="product_name" name="product_name"  required>
+            <form method="post" enctype="multipart/form-data" action="/product/save/">
+                {% csrf_token %}
+                
+                <div class="form-group mb-3">
+                    <label for="product_name">Product Name:</label>
+                    <input type="text" class="form-control" id="product_name" name="product_name" required>
+                </div>
+                
+                <div class="form-group mb-3">
+                    <label for="price">Price:</label>
+                    <input type="number" class="form-control" id="price" name="price" required>
+                </div>
+                
+                <div class="form-group mb-3">
+                    <label for="image">Image:</label>
+                    <input type="file" class="form-control-file" id="image" name="image" required>
+                </div>
+                
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success">Save Product</button>
+                </div>
+            </form>
         </div>
-        <br>
-        
-        <div class="form-group">
-            <label for="price">Price:</label>
-            <input type="number" class="form-control" id="price" name="price" required>
-        </div>
-        <br>
-        
-        <div class="form-group">
-            <label for="image">Image:</label>
-            <input type="file" class="form-control-file" id="image" name="image" required>
-        </div>
-        <br>
-        
-        <button type="submit" class="btn btn-primary">Save</button>
-    </form>
-</div>
+    </div>
 </div>
 
 {% endblock %}

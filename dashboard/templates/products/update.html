@@ -3,35 +3,39 @@
 {% block title %}Update Product{% endblock %}
 
 {% block content %}
-<div class="container row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="mb-4">Update Product</h2>
+            
+            <form method="post" enctype="multipart/form-data" action="/product/store/">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ product.id }}">
 
-   
-    <h2>Update Product</h2>
-    <form method="post" enctype="multipart/form-data" action="/product/store/">
-        {% csrf_token %}
-        <input type="hidden" name="id" value="{{ product.id }}">
-        
-        <div class="form-group">
-            <label for="product_name">Product Name:</label>
-            <input type="text" class="form-control" id="product_name" name="product_name" value="{{ product.product_name }}" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="price">Price:</label>
-            <input type="number" class="form-control" id="price" name="price" value="{{ product.price }}" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="image">Image:</label>
-            <input type="file" class="form-control-file" id="image" name="image" required>
-        </div>
-        <br>
-        
-        <button type="submit" class="btn btn-primary">Update</button>
-    </form>
-</div>
-</div>
+                <!-- Product Name -->
+                <div class="form-group mb-3">
+                    <label for="product_name" class="form-label">Product Name:</label>
+                    <input type="text" class="form-control" id="product_name" name="product_name" value="{{ product.product_name }}" required>
+                </div>
 
+                <!-- Price -->
+                <div class="form-group mb-3">
+                    <label for="price" class="form-label">Price:</label>
+                    <input type="number" class="form-control" id="price" name="price" value="{{ product.price }}" required>
+                </div>
+
+                <!-- Image -->
+                <div class="form-group mb-3">
+                    <label for="image" class="form-label">Product Image:</label>
+                    <input type="file" class="form-control-file" id="image" name="image">
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Update Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

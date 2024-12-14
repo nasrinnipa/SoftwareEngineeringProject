@@ -5,20 +5,24 @@
 {% block content %}
 <div class="container mt-5">
     <div class="row">
+        <!-- Product Image -->
         <div class="col-md-6">
-            <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.product_name }}">
+            <img src="{{ product.image.url }}" class="img-fluid rounded shadow" alt="{{ product.product_name }}">
         </div>
-        <div class="col-md-6">
 
-            <h2>{{ product.product_name }}</h2>
-            <p>Price: ${{ product.price }}</p>
-            <p>{{ product.product_name }} description will be added leter</p>
-            <div class="row">
-                <div class="col-md-3 ">
-                    <a href="/product/update/{{ product.id }}" class="btn btn-success ">Update</a>
+        <!-- Product Details -->
+        <div class="col-md-6">
+            <h2 class="fw-bold">{{ product.product_name }}</h2>
+            <p class="text-muted">Price: <span class="h4">${{ product.price }}</span></p>
+            <p>{{ product.product_name }} description will be added later.</p>
+
+            <!-- Action Buttons -->
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <a href="/product/update/{{ product.id }}" class="btn btn-success w-50">Update</a>
                 </div>
-                <div class="col-md-3">
-                    <a href="/product/delete/{{ product.id }}" class="btn btn-danger">Delete</a>
+                <div class="col-md-6">
+                    <a href="/product/delete/{{ product.id }}" class="btn btn-danger w-50">Delete</a>
                 </div>
             </div>
         </div>

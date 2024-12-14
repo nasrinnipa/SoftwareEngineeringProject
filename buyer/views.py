@@ -3,6 +3,7 @@ from .models import *
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout as auth_logout
 
 from .Buyer_Form import *
 from .Seller_Form import *
@@ -12,7 +13,7 @@ def home(request):
     return render(request, "Home.html")
 
 def logout(request):
-    logout(request)
+    auth_logout(request)
     return render(request, "Sign_In.html")
 
 
@@ -25,48 +26,59 @@ def sign_in(request):
         
         if user:
             login(request, user)
-
-            return redirect('market')
+            if user.is_superuser:
+                return redirect('/seller')
+            else:
+                return redirect('/market')
         else:
-            return render(request, 'Sign_In.html', {'error': 'Username or password incorrect'})        
+            return render(request, 'Sign_In.html', {'error': 'Username or password incorrect'})
+    
     return render(request, "Sign_In.html")
 
 
 def sign_up(request):
     if request.method == 'POST':
-         # Retrieve form data
+        # Retrieve form data
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
         username = request.POST.get('username')
         password = request.POST.get('password')
         password_confirm = request.POST.get('password_confirm')
+        role = request.POST.get('role')  # This will get the selected role (Buyer or Seller)
 
-         # Check if passwords match
+        # Check if passwords match
         if password != password_confirm:
             return render(request, 'Sign_Up.html', {'error': 'Passwords do not match'})
         
-         # Check if username or email already exists
+        # Check if username or email already exists
         if User.objects.filter(username=username).exists():
             return render(request, 'Sign_Up.html', {'error': 'Username already exists'})
         if User.objects.filter(email=email).exists():
             return render(request, 'Sign_Up.html', {'error': 'Email already exists'})
         
-         # Create user
+        # Create user
         user = User.objects.create_user(username=username, email=email, password=password)
         user.first_name = first_name
         user.last_name = last_name
+
+        # Set is_admin or is_staff based on role selection
+        if role == 'Seller':
+            user.is_superuser = True  # Set admin to True if role is Seller
+        elif role == 'Buyer':
+            user.is_staff = True  # Set staff to True if role is Buyer
+
         user.save()
+
+        # Redirect to Sign In page
         return render(request, "Sign_In.html")
         
     return render(request, "Sign_Up.html")
 
+
 def buyer(request):
-    buyer = Buyer.objects.all()
-    context = {
-        'buyer': buyer,
-    }
-    return render(request, template_name='Buyer.html', context=context)
+    user = request.user
+    return render(request, template_name='Buyer.html', context={'user': user})
 
 def add_Buyer(request):
         form = Buyer_Form()
@@ -79,12 +91,9 @@ def add_Buyer(request):
         }
         return render(request, template_name='add_buyer.html', context=context)
 
-def seller(request):
-    seller = Seller.objects.all()
-    context = {
-        'seller': seller,
-    }
-    return render(request, template_name='Seller.html', context=context)
+def buyer(request):
+    user = request.user
+    return render(request, template_name='Buyer.html', context={'user': user})
 
 def add_Seller(request):
         form = Seller_Form()
@@ -158,6 +167,7 @@ def checkoutMake(request):
     cart.delete()
     orders = Order.objects.filter(Buyer_Id=buyer_id)
     messages.success(request, f"Order Placed Successfully!")
+    return redirect('https://epay-gw.sslcommerz.com/afc8feb0823dc280a37f80611cf36058e37dce8f')
 
     return render(request, 'order.html', {'orders': orders})
 def showOrders(request):

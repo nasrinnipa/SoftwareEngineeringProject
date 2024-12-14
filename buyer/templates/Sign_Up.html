@@ -1,82 +1,98 @@
-<!DOCTYPE html>  
-<html>  
-<head>  
-<meta name="viewport" content="width=device-width, initial-scale=1">  
-<style>  
-body{  
-  font-family: Calibri, Helvetica, sans-serif;  
-  background-color: rgb(255, 255, 255);  
-}  
-.container {  
-    padding: 50px;  
-    padding-left: 250px;  
-    padding-right: 250px;  
-  background-color: rgb(255, 255, 255);  
-}  
-  
-input[type=text], input[type=password], textarea {  
-  width: 100%;  
-  padding: 15px;  
-  margin: 5px 0 22px 0;  
-  display: inline-block;  
-  border: none;  
-  background: #f1f1f1;  
-}  
-input[type=text]:focus, input[type=password]:focus {  
-  background-color: rgb(253, 251, 251);  
-  outline: none;  
-}  
- div {  
-            padding: 10px 0;  
-         }  
-hr {  
-  border: 1px solid #f1f1f1;  
-  margin-bottom: 25px;  
-}  
-.registerbtn {  
-  background-color: #4CAF50;  
-  color: white;  
-  padding: 16px 20px;  
-  margin: 8px 0;  
-  border: none;  
-  cursor: pointer;  
-  width: 100%;  
-  opacity: 0.9;  
-}  
-.registerbtn:hover {  
-  opacity: 1;  
-}  
-</style>  
-</head>  
-<body>  
-  {% if error %}
-  <p style="color: red;">{{ error }}</p>
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{
+  font-family: Calibri, Helvetica, sans-serif;
+  background-color: rgb(255, 255, 255);
+}
+.container {
+    padding: 50px;
+    padding-left: 250px;
+    padding-right: 250px;
+  background-color: rgb(255, 255, 255);
+}
+
+input[type=text], input[type=password], textarea {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+input[type=text]:focus, input[type=password]:focus {
+  background-color: rgb(253, 251, 251);
+  outline: none;
+}
+div {
+            padding: 10px 0;
+         }
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+.registerbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+.registerbtn:hover {
+  opacity: 1;
+}
+.radio-group {
+  margin: 10px 0;
+}
+</style>
+</head>
+<body>
+
+{% if error %}
+<p style="color: red;">{{ error }}</p>
 {% endif %}
-<form method="post" action="{% url 'signup' %}">  
+
+<form method="post" action="{% url 'signup' %}">
   {% csrf_token %}
 
-  <div class="container">  
-  <center>  <h1> Sign Up</h1> </center>  
-  <hr>  
-  <label> Firstname </label>   
-<input type="text" name="first_name" placeholder= "First name" size="15" required />   
-<label> Lastname: </label>    
-<input type="text" name="last_name" placeholder="Last Name" size="15"required />   
-<label> Username: </label>    
+  <div class="container">
+  <center><h1> Sign Up</h1></center>
+  <hr>
+  <label> Firstname </label>
+  <input type="text" name="first_name" placeholder="First name" size="15" required />
 
-<input type="text" name="username" placeholder="Username" size="15"required />   
- 
-<div>  
+  <label> Lastname: </label>
+  <input type="text" name="last_name" placeholder="Last Name" size="15" required />
 
- <label for="email"><b>Email</b></label>  
- <input type="text" placeholder="Enter Email" name="email" required>  
-  
-    <label for="password"><b>Password</b></label>  
-    <input type="password" placeholder="Enter Password" name="password" required>  
-  
-    <label for="password_confirm"><b>Re-type Password</b></label>  
-    <input type="password" placeholder="Retype Password" name="password_confirm" required>  
-    <button type="submit" class="registerbtn">Sign Up</button>    
-</form>  
-</body>  
-</html>  
+  <label> Username: </label>
+  <input type="text" name="username" placeholder="Username" size="15" required />
+
+  <div>
+    <label for="email"><b>Email</b></label>
+    <input type="text" placeholder="Enter Email" name="email" required>
+
+    <label for="password"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="password" required>
+
+    <label for="password_confirm"><b>Re-type Password</b></label>
+    <input type="password" placeholder="Retype Password" name="password_confirm" required>
+
+    <div class="radio-group">
+      <label><b>Role</b></label><br>
+      <input type="radio" id="buyer" name="role" value="Buyer" required>
+      <label for="buyer">Buyer</label><br>
+      <input type="radio" id="seller" name="role" value="Seller" required>
+      <label for="seller">Seller</label><br>
+    </div>
+
+    <button type="submit" class="registerbtn">Sign Up</button>
+  </div>
+</form>
+
+</body>
+</html>
