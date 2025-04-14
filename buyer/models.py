@@ -35,12 +35,30 @@ class Sell_Product(models.Model):
     Product_Id = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
 
 class Order(models.Model):
-
     Order_Id = models.AutoField(primary_key=True)
     Buyer_Id = models.IntegerField(null=True)
     Seller_Id = models.IntegerField(null=True)
-    Product_Id = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
-    Product_Amount = models.IntegerField(null=True)
+    Order_Date = models.DateTimeField(auto_now_add=True)
+    Total_Amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    # Other fields as necessary
+
+    def __str__(self):
+        return f"Order {self.Order_Id} by Buyer {self.Buyer_Id}"
+
+
+class OrderItem(models.Model):
+    Order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
+    Product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    Quantity = models.IntegerField()
+    Subtotal = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def save(self, *args, **kwargs):
+        # Calculate the subtotal each time an OrderItem is saved
+        self.Subtotal = self.Product.price * self.Quantity
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.Quantity} x {self.Product.product_name} in Order {self.Order.Order_Id}"
 
 class Inventory(models.Model):
 
@@ -66,8 +84,10 @@ class Payment(models.Model):
     Payment_Date = models.DateTimeField(auto_now_add=True, auto_now=False)
 
 class Cart(models.Model):
-
     id = models.AutoField(primary_key=True)
-    buyer_id= models.IntegerField(null=True)
+    buyer_id = models.IntegerField(null=True)
     product_id = models.IntegerField(null=True)
-    
+    quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f"Buyer {self.buyer_id} - Product {self.product_id} (x{self.quantity})"

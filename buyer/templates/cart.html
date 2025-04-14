@@ -25,32 +25,63 @@
     <div class="row">
         <div class="col-md-12">
             <!-- Table for cart items -->
-            <table class="table table-bordered table-hover">
+            <table class="table table-bordered table-hover shadow-sm rounded">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">Product Image</th>
                         <th scope="col">Product Name</th>
-                        <th scope="col">Price</th>
+                        <th scope="col">Price (BDT)</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Subtotal (BDT)</th>
+                        <th scope="col">Remove</th> <!-- Added column for remove button -->
                     </tr>
                 </thead>
                 <tbody>
-                    {% for product in products %}
+                    {% for item in cart_items %}
                     <tr>
-                        <td><img src="{{ product.image.url }}" alt="{{ product.product_name }}" class="img-fluid" style="max-height: 50px;"></td>
-                        <td>{{ product.product_name }}</td>
-                        <td>${{ product.price }}</td>
+                        <td>
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.product_name }}" class="img-fluid" style="max-height: 50px;">
+                        </td>
+                        <td>{{ item.product.product_name }}</td>
+                        <td>{{ item.product.price }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.total_price }}</td>
+                        <td>
+                            <!-- Cross button to remove item from cart -->
+                            <form method="post" action="{% url 'remove_from_cart' item.id %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    x
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                     {% endfor %}
+                    <!-- Total row -->
+                    <tr class="font-weight-bold">
+                        <td colspan="4" class="text-right">Total:</td>
+                        <td>{{ total_cost }}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
     <div class="row mt-4">
-        <div class="col-md-12 text-right">
-            <!-- Checkout button -->
-            <a href="/checkout/" class="btn btn-lg btn-success">Proceed to Checkout</a>
+        <div class="col-md-12 text-end">
+            {% if total_cost > 0 %}
+                <!-- Enabled Checkout Button -->
+                <a href="/checkout/" class="btn btn-lg btn-success shadow-sm rounded" style="width: 300px;">Proceed to Checkout</a>
+            {% else %}
+                <!-- Disabled Button -->
+                <button class="btn btn-lg btn-secondary shadow-sm rounded" style="width: 300px;" disabled>
+                    Proceed to Checkout
+                </button>
+            {% endif %}
         </div>
     </div>
+    
+    <br>
+    <br>
 </div>
 {% endblock %}

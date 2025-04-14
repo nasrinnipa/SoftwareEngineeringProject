@@ -3,33 +3,65 @@
 {% block title %}Product Details{% endblock %}
 
 {% block content %}
-<!-- Display messages -->
 
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li>{{ message }}</li>
-        {% endfor %}
+{% if messages %}
+  <div class="alert alert-info mt-3">
+    <ul class="mb-0">
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
     </ul>
+  </div>
 {% endif %}
 
 <div class="container mt-5">
-    <div class="row">
-        <div class="col-md-6">
-            <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.product_name }}">
-        </div>
-        <div class="col-md-6">
-
-            <h2>{{ product.product_name }}</h2>
-            <p>Price: {{ product.price }} Taka / kg.</p>
-            <p>{{ product.product_name }} description will be added leter</p>
-            <div class="row">
-                <div class="col-md-3 ">
-                    <a href="/cart/add/{{ product.id }}" class="btn btn-success ">Add to Cart</a>
-                </div>
-
-            </div>
-        </div>
+  <div class="row">
+    <!-- Product Image -->
+    <div class="col-md-6">
+      <img src="{{ product.image.url }}" class="img-fluid rounded shadow-sm" alt="{{ product.product_name }}">
     </div>
+
+    <!-- Product Info -->
+    <div class="col-md-6">
+      <h2 class="fw-bold mb-3">{{ product.product_name }}</h2>
+      <p><strong>Price:</strong> BDT {{ product.price }}</p>
+      <p><strong>Description:</strong> {{ product.description|default:"No description available." }}</p>
+      <p><strong>Available Quantity:</strong> {{ product.quantity }}</p>
+
+      <form method="post" action="/cart/add">
+        {% csrf_token %}
+        <input type="hidden" name="product_id" value="{{ product.id }}">
+      
+        <div class="mb-3 d-flex align-items-center">
+          <label for="quantity" class="me-2 mb-0 fw-semibold">Quantity:</label>
+          <div class="input-group" style="width: 160px;">
+            <button class="btn btn-outline-secondary" type="button" onclick="changeQuantity(-1)">-</button>
+            <input type="number" id="quantity" name="quantity" class="form-control text-center fw-bold" value="1" min="1" max="{{ product.quantity }}" required style="font-size: 1rem;">
+            <button class="btn btn-outline-secondary" type="button" onclick="changeQuantity(1)">+</button>
+          </div>
+        </div>
+      
+        <button type="submit" class="btn btn-success">Add to Cart</button>
+      </form>
+      
+      
+    </div>
+  </div>
 </div>
+
+<script>
+  function changeQuantity(amount) {
+    const input = document.getElementById('quantity');
+    let current = parseInt(input.value);
+    const max = parseInt(input.max);
+    const min = parseInt(input.min);
+
+    let updated = current + amount;
+    if (updated < min) updated = min;
+    if (updated > max) updated = max;
+
+    input.value = updated;
+  }
+</script>
+
 {% endblock %}

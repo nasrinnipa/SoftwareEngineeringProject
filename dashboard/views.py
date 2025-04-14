@@ -21,6 +21,8 @@ def saveProduct(request):
 
         product_name = request.POST.get('product_name')
         price = request.POST.get('price')
+        quantity = request.POST.get('quantity')
+        description = request.POST.get('description')
         # Handle file upload for image
         image = None
         if 'image' in request.FILES:
@@ -30,6 +32,8 @@ def saveProduct(request):
         new_product = Product.objects.create(
             product_name=product_name,
             price=price,
+            quantity=quantity,
+            description=description,
             image=image
         )
         # Redirect to product list page after successful creation
@@ -45,16 +49,16 @@ def storeProduct(request):
         id = request.POST.get('id')
         product = get_object_or_404(Product, pk=id)
 
-        product_name = request.POST.get('product_name')
-        price = request.POST.get('price')
+        product.product_name = request.POST.get('product_name')
+        product.price = request.POST.get('price')
+        product.quantity = request.POST.get('quantity')
+        product.description = request.POST.get('description')
         # Handle file upload for image
         image = None
         if 'image' in request.FILES:
             image = request.FILES['image']
         
         # Update data 
-        product.product_name = product_name
-        product.price = price
         if image:
             product.image = image
         

@@ -17,6 +17,9 @@ class Product(models.Model):
     id= models.AutoField(primary_key=True)
     product_name = models.CharField(max_length=255)
     price = models.FloatField()
+    description = models.TextField(blank=True, null=True)
+    quantity = models.PositiveIntegerField(default=0)
+
     image = models.ImageField(blank=True,null=True, upload_to='products/')
 
     def __str__(self):

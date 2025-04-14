@@ -18,25 +18,47 @@
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
-            <h3>Order Details</h3>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">Order Number</th>
-                        <th scope="col">Product Name</th>
-                        <th scope="col">Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for order in orders %}
-                    <tr>
-                        <td># {{ order.Order_Id }}</td>
-                        <td>{{ order.Product_Id.product_name }}</td>
-                        <td>{{ order.Product_Amount }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <h3 class="text-center mb-4">Order Details</h3>
+
+            {% for order in orders %}
+            <!-- Order Card -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Order #{{ order.Order_Id }}</h5>
+
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Price (BDT)</th>
+                                <th scope="col">Subtotal (BDT)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in order.items.all %}
+                            <tr>
+                                <td>{{ item.Product.product_name }}</td>
+                                <td>{{ item.Quantity }}</td>
+                                <td>{{ item.Product.price }}</td>
+                                <td>{{ item.Subtotal }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <!-- Total Price -->
+                    <div class="text-end font-weight-bold mt-3">
+                        <span>Total Order Amount: </span><strong>{{ order.Total_Amount }} BDT</strong>
+                    </div>
+
+                    <!-- <hr>
+                    <div class="text-center">
+                        <a href="/order/{{ order.Order_Id }}/invoice" class="btn btn-outline-primary">View Invoice</a>
+                    </div> -->
+                </div>
+            </div>
+            {% endfor %}
         </div>
         <div class="col-md-3"></div>
     </div>
