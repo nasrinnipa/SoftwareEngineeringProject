@@ -47,6 +47,8 @@ urlpatterns = [
     path('checkout/', b_view.checkout),
     path('checkout/make', b_view.checkoutMake),
     path('order', b_view.showOrders),
+    path('order/<int:order_id>/receipt/', b_view.download_receipt, name='download_receipt'),
+
 
 
     path('seller/',s_view.seller, name ='seller'),

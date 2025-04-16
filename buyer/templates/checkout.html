@@ -30,12 +30,12 @@
                     {% for product in products %}
                     <tr>
                         <td>{{ product.product_name }}</td>
-                        <td>${{ product.price }}</td>
+                        <td>BDT {{ product.price }}</td>
                     </tr>
                     {% endfor %}
                     <tr style="font-weight: bold;">
                         <td>Total:</td>
-                        <td>{{ total }} Taka</td>
+                        <td>BDT {{ total }}</td>
                     </tr>
                 </tbody>
             </table>

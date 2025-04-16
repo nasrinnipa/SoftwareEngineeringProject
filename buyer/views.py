@@ -1,9 +1,17 @@
 from django.shortcuts import render,redirect, get_object_or_404
 from .models import *
+from django.contrib.auth.models import User
+
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout as auth_logout
+from django.template.loader import render_to_string
+
+# for pdf 
+from xhtml2pdf import pisa
+from django.http import HttpResponse
+from django.template.loader import get_template
 
 from .Buyer_Form import *
 from .Seller_Form import *
@@ -131,7 +139,7 @@ def addToCart(request):
 
         # Optional: check if enough stock is available
         if quantity > product.quantity:
-            messages.error(request, f"Only {product.quantity} units available.")
+            messages.error(request, f"Only {product.quantity} kg available.")
             return redirect(f"/market/product-details/{product_id}")
 
         # Check if the product is already in the cart
@@ -143,7 +151,7 @@ def addToCart(request):
             cart_item.quantity = quantity
             cart_item.save()
 
-        messages.success(request, f"{quantity} unit(s) of '{product.product_name}' added to your cart!")
+        messages.success(request, f"{quantity} kg of {product.product_name} added to your cart!")
         return redirect("market")
 
 def showCart(request):
@@ -229,11 +237,46 @@ def checkoutMake(request):
     # return redirect('https://epay-gw.sslcommerz.com/afc8feb0823dc280a37f80611cf36058e37dce8f')
 
     # render the order confirmation page
-    orders = Order.objects.filter(Buyer_Id=buyer_id)
-    return render(request, 'order.html', {'orders': orders})
+    return redirect('/order')
 
 def showOrders(request):
     buyer_id = request.user.id or 1  # default
 
     orders = Order.objects.filter(Buyer_Id=buyer_id).order_by('-Order_Id')
     return render(request, 'order.html', {'orders': orders})
+
+
+def download_receipt(request, order_id):
+    order = Order.objects.get(pk=order_id)
+
+    try:
+        buyer = User.objects.get(pk=order.Buyer_Id)
+    except User.DoesNotExist:
+        buyer = None
+
+    print("BUYER:", buyer)  # Confirm it’s not None
+    # return HttpResponse(f"Buyer: {buyer.first_name} {buyer.last_name} - {buyer.email}")
+
+    try:
+        payment = Payment.objects.get(Order_Id=order)
+    except Payment.DoesNotExist:
+        payment = None
+
+    template_path = 'receipt_template.html'
+    context = {
+        'order': order,
+        'buyer': buyer,
+        'payment': payment
+    }
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="receipt_{order.Order_Id}.pdf"'
+
+    template = get_template(template_path)
+    html = template.render(context)
+
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    if pisa_status.err:
+        return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response

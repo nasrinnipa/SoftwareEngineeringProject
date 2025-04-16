@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Receipt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        .header, .footer {
+            text-align: center;
+        }
+        .header h2 {
+            margin-bottom: 0;
+        }
+        .section {
+            margin: 20px 0;
+        }
+        .row {
+            display: flex;
+            justify-content: space-between;
+        }
+        .left, .right {
+            display: table-cell;
+            width: 50%;
+            vertical-align: top;
+            padding-right: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        table, th, td {
+            border: 1px solid #aaa;
+        }
+        th, td {
+            padding: 2px;
+            text-align: left;
+        }
+        .total {
+            text-align: right;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Nipa Fresh Farm</h1>
+        <h2>AgriBusiness, Farmgate</h2>
+        <hr>
+        <h2>Money Receipt</h2>
+    </div>
+
+    <div class="section row">
+        <div class="left">
+            <h4>Buyer Information</h4>
+            <p><strong>Name:</strong> {{ buyer.first_name }} {{ buyer.last_name }}</p>
+            <p><strong>Email:</strong> {{ buyer.email }}</p>
+            <!-- <p><strong>Phone:</strong> {{ buyer.phone_number }}</p>
+            <p><strong>Location:</strong> {{ buyer.location }}</p> -->
+        </div>
+
+        <div class="right" style="text-align: right;">
+            <h4>Order Details</h4>
+            <p><strong>Order ID:</strong> {{ order.Order_Id }}</p>
+            <p><strong>Order Date:</strong> {{ order.Order_Date }}</p>
+        </div>
+    </div>
+
+    <div class="section" style="text-align: center;">
+        <h4>Ordered Items</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price (BDT)</th>
+                    <th>Subtotal (BDT)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order.items.all %}
+                <tr>
+                    <td>{{ item.Product.product_name }}</td>
+                    <td>{{ item.Quantity }}</td>
+                    <td>{{ item.Product.price }}</td>
+                    <td>{{ item.Subtotal }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p class="total">Total Amount: {{ order.Total_Amount }} BDT</p>
+    </div>
+<!-- 
+    <div class="section">
+        <h4>Payment Info</h4>
+        {% if payment %}
+        <p><strong>Payment Method:</strong> {{ payment.Payment_Option }}</p>
+        <p><strong>Amount Paid:</strong> {{ payment.Payment_Amount }} BDT</p>
+        <p><strong>Date:</strong> {{ payment.Payment_Date }}</p>
+        {% else %}
+        <p><em>Payment information not available.</em></p>
+        {% endif %}
+    </div> -->
+
+    <div class="footer">
+        <p>Thank you for your purchase!</p>
+    </div>
+</body>
+</html>

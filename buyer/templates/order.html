@@ -48,14 +48,16 @@
                     </table>
 
                     <!-- Total Price -->
-                    <div class="text-end font-weight-bold mt-3">
+                    <div class="text-end font-weight-bold mt-3 mb-3">
                         <span>Total Order Amount: </span><strong>{{ order.Total_Amount }} BDT</strong>
                     </div>
 
-                    <!-- <hr>
+                    <!-- Download Receipt -->
                     <div class="text-center">
-                        <a href="/order/{{ order.Order_Id }}/invoice" class="btn btn-outline-primary">View Invoice</a>
-                    </div> -->
+                        <a href="{% url 'download_receipt' order.Order_Id %}" class="btn btn-success">
+                            Download Receipt (PDF)
+                        </a>
+                    </div>
                 </div>
             </div>
             {% endfor %}
