@@ -26,6 +26,8 @@
       <h2 class="fw-bold mb-3">{{ product.product_name }}</h2>
       <p><strong>Price:</strong> BDT {{ product.price }}</p>
       <p><strong>Description:</strong> {{ product.description|default:"No description available." }}</p>
+      <p><strong>Seller:</strong> {{ product.seller_id.username }}</p>
+
       <p><strong>Available Quantity:</strong> {{ product.quantity }} kg</p>
 
       <form method="post" action="/cart/add">

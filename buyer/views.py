@@ -1,4 +1,6 @@
 from django.shortcuts import render,redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+
 from .models import *
 from django.contrib.auth.models import User
 
@@ -123,12 +125,17 @@ def inventory(request):
     }
     return render(request, template_name='Inventory.html', context=context)
 
+@login_required
 def market(request):
     products = Product.objects.all()
     return render(request, 'market.html', {'products': products})
+
+@login_required
 def productDetails(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     return render(request, 'product-details.html', {'product': product})
+
+@login_required
 def addToCart(request):
      if request.method == "POST":
         buyer_id = request.user.id or 1  # Replace this logic with actual user handling
@@ -154,6 +161,7 @@ def addToCart(request):
         messages.success(request, f"{quantity} kg of {product.product_name} added to your cart!")
         return redirect("market")
 
+@login_required
 def showCart(request):
     buyer_id = request.user.id or 1  # default to 1 if no user is logged in
     cart_items = Cart.objects.filter(buyer_id=buyer_id)
@@ -168,6 +176,8 @@ def showCart(request):
         products.append(cart_item)
 
     return render(request, 'cart.html', {'cart_items': cart_items, 'products': products, 'total_cost': total_cost})
+
+@login_required
 def remove_from_cart(request, item_id):
     try:
         cart_item = Cart.objects.get(id=item_id, buyer_id=request.user.id)
@@ -177,6 +187,8 @@ def remove_from_cart(request, item_id):
         messages.error(request, "Product not found in your cart.")
 
     return redirect('/cart')  # Redirect back to the cart page
+
+@login_required
 def checkout(request):
     buyer_id = request.user.id or 1 # default
     cart = Cart.objects.filter(buyer_id=buyer_id)
@@ -190,6 +202,8 @@ def checkout(request):
         totalItems += 1
 
     return render(request, 'checkout.html', {'total': totalPrice, 'products':products})
+
+@login_required
 def checkoutMake(request):
     buyer_id = request.user.id or 1  # default
     cart = Cart.objects.filter(buyer_id=buyer_id)
@@ -239,13 +253,14 @@ def checkoutMake(request):
     # render the order confirmation page
     return redirect('/order')
 
+@login_required
 def showOrders(request):
     buyer_id = request.user.id or 1  # default
 
     orders = Order.objects.filter(Buyer_Id=buyer_id).order_by('-Order_Id')
     return render(request, 'order.html', {'orders': orders})
 
-
+@login_required
 def download_receipt(request, order_id):
     order = Order.objects.get(pk=order_id)
 

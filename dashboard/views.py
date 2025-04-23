@@ -1,20 +1,27 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 
 from .models import Product,User
 
 def home(request):
     return render(request, 'dashboard.html')
 
+@login_required
 def product(request):
-    products = Product.objects.all()
+    # products = Product.objects.all()
+    products = Product.objects.filter(seller_id=request.user)
 
     return render(request, 'products/index.html', {'products': products})
+
+@login_required
 def showProduct(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
 
     return render(request, 'products/show.html', {'product': product})
 def createProduct(request):
     return render(request, 'products/create.html')
+
+@login_required
 def saveProduct(request):
     if request.method == 'POST':
         # Extract data from request.POST
@@ -34,15 +41,19 @@ def saveProduct(request):
             price=price,
             quantity=quantity,
             description=description,
+            seller_id=request.user,
             image=image
         )
         # Redirect to product list page after successful creation
         return render(request, 'products/show.html', {'product': new_product})
         
+@login_required
 def updateProduct(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
 
     return render(request, 'products/update.html', {'product': product})
+
+@login_required
 def storeProduct(request):
     if request.method == 'POST':
         # Extract data from request.POST
@@ -66,7 +77,8 @@ def storeProduct(request):
 
         # Redirect to product list page after successful creation
         return render(request, 'products/show.html', {'product': product})
-        
+
+@login_required       
 def deleteProduct(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     product.delete()
