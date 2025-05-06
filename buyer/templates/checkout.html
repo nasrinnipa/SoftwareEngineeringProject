@@ -23,18 +23,22 @@
                 <thead>
                     <tr>
                         <th scope="col">Product Name</th>
-                        <th scope="col">Price</th>
+                        <th scope="col">Quantity (kg)</th>
+                        <th scope="col">Unit Price</th>
+                        <th scope="col">Total</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for product in products %}
+                    {% for item in products %}
                     <tr>
-                        <td>{{ product.product_name }}</td>
-                        <td>BDT {{ product.price }}</td>
+                        <td>{{ item.product.product_name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>BDT {{ item.product.price }}</td>
+                        <td>BDT {{ item.total }}</td>
                     </tr>
                     {% endfor %}
                     <tr style="font-weight: bold;">
-                        <td>Total:</td>
+                        <td colspan="3" class="text-right">Total:</td>
                         <td>BDT {{ total }}</td>
                     </tr>
                 </tbody>

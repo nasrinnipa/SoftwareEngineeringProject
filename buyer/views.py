@@ -195,13 +195,25 @@ def checkout(request):
     products = []
     totalPrice = 0
     totalItems = 0
+    products_with_totals = []
     for cart_item in cart:
         product = Product.objects.get(id=cart_item.product_id)
-        products.append(product)
-        totalPrice += product.price
-        totalItems += 1
+        quantity = cart_item.quantity
+        total = product.price * quantity
 
-    return render(request, 'checkout.html', {'total': totalPrice, 'products':products})
+        products_with_totals.append({
+            'product': product,
+            'quantity': quantity,
+            'total': total,
+        })
+
+        totalPrice += total
+        totalItems += quantity
+
+    return render(request, 'checkout.html', {
+        'total': totalPrice,
+        'products': products_with_totals
+    })
 
 @login_required
 def checkoutMake(request):
